@@ -28,7 +28,7 @@ As of v1.0, the supported playbooks are:
 
 In the same repo, there are 28 roles that can be used to create more playbooks/use cases. (Please refer to "Create your own Playbook" section)
 
-Created by Cisco AS ASEAN ADN Team (moelsher)
+
 
 
 # Content Structure/Organization
