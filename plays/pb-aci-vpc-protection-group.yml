@@ -1,0 +1,12 @@
+---
+- name: Create Switch vPC Protection Group
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/fabric.yml"
+        name: ACI_Fabric
+
+    - include_role:
+         name: aci-switch-policy-vpc-protection-group          # Create Switch vPC Protection Group

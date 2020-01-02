@@ -1,0 +1,18 @@
+---
+- name: Create ACI Teant, VRF, and AP (Application Profile)
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/{{ tenant_name }}.yml"
+        name: ACI_Fabric
+
+    - include_role:
+        name: aci-tenant                    # Create a User Tenant
+
+    - include_role:
+        name: aci-vrf                       # Create a VRF/Context
+
+    - include_role:
+        name: aci-ap                        # Create APs and associate it to User Tenants.

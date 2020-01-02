@@ -1,0 +1,12 @@
+---
+- name: Associate Domains to EPGs
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/{{ tenant_name }}.yml"
+        name: ACI_Fabric
+
+    - include_role:
+        name: aci-epg-to-domain             # Associate any Domain (Phys, L3, VMM) to EPGs

@@ -1,0 +1,12 @@
+---
+- name: Manage VLAN pools (fvns:VlanInstP)
+  aci_vlan_pool:
+    host: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    pool: "{{ item.access_policy_vlan_pool_name }}"
+    state: "{{ item.access_policy_vlan_pool_state }}"
+    description: "{{ item.access_policy_vlan_pool_descr }}"
+    pool_allocation_mode: "{{ item.access_policy_vlan_pool_alloc }}"
+  with_items: '{{ ACI_Fabric|aci_listify("access_policy","vlan_pool","encap_block") }}'

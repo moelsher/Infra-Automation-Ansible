@@ -1,0 +1,22 @@
+---
+- name: Create VLAN Pool, VLAN Pool Encap Block, Physical Domain, and Bind a Physical domain to VLAN Pools
+  hosts: "{{ target }}"
+  gather_facts: no
+
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/fabric.yml"
+        name: ACI_Fabric
+
+    - include_role:
+        name: aci-vlan-pool                 # Create VLAN Pools
+
+    - include_role:
+        name: aci-vlan-pool-encap-block     # Create and assign encap block to VLAN Pools
+
+    - include_role:
+        name: aci-physical-domain           # Create Physical Domains
+
+    - include_role:
+        name: aci-domain-to-vlan-pool       # Bind a Physical Domain to VLAN Pools

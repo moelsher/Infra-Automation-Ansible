@@ -1,0 +1,15 @@
+---
+- name: Create BD and Assign Subnet
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_path }}/{{ tenant_name }}.yml"
+        name: ACI_Fabric
+
+    - include_role:
+        name: aci-bd                        # Create Bridge Domain (BD)
+
+    - include_role:
+        name: aci-bd-subnet                 # Assign a subnet to BDs

@@ -1,0 +1,9 @@
+---
+- name: Playbook for Querying all EPGs in all Tenants
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    # Query all EPGs
+    - include_role:
+        name: aci-epg-query-all

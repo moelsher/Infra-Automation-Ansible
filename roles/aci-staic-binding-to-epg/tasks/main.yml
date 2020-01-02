@@ -1,0 +1,20 @@
+---
+- name: Deploy Static Path binding for given EPG  (fv:RsPathAtt)
+  aci_static_binding_to_epg:
+    host: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    tenant: "{{ item.tenant_name }}"
+    ap: "{{ item.tenant_app_name }}"
+    epg: "{{ item.tenant_app_epg_name }}"
+    encap_id: "{{ item.tenant_app_epg_staticpath_encap }}"
+    deploy_immediacy: "{{ item.tenant_app_epg_staticpath_deploy }}"
+    interface_mode: "{{ item.tenant_app_epg_staticpath_mode }}"
+    interface_type: "{{ item.tenant_app_epg_staticpath_type }}"
+    pod_id: "{{ item.tenant_app_epg_staticpath_pod }}"
+    leafs: "{{ item.tenant_app_epg_staticpath_leafs }}"
+    interface: "{{ item.tenant_app_epg_staticpath_interface }}"
+    state: "{{ item.tenant_app_epg_state }}"
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('tenant','app','epg','staticpath') }}"

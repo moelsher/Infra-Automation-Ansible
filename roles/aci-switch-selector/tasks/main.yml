@@ -1,0 +1,14 @@
+---
+- name: Create Switch Selector and bind it to Switch Profile (infra:LeafS, infra:NodeBlk, infra:RsAccNodePGrep)
+  aci_switch_leaf_selector:
+    host: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    leaf_profile: "{{item.access_policy_switch_policy_profile_name}}"
+    leaf: "{{item.access_policy_switch_policy_profile_leaf_selector_name}}"
+    leaf_node_blk: block2
+    from: "{{item.access_policy_switch_policy_profile_leaf_selector_from}}"
+    to: "{{item.access_policy_switch_policy_profile_leaf_selector_to}}"
+    state: "{{item.access_policy_switch_policy_profile_leaf_selector_state}}"
+  with_items: "{{ ACI_Fabric|aci_listify('access_policy','switch_policy_profile','leaf_selector') }}"

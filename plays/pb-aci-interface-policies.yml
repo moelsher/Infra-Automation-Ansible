@@ -1,0 +1,39 @@
+---
+# Create Interface Policies for each External Node
+# This playbook creates the interface policies for LLDP, CDP, STP, Port-Channel and Link-Level
+# Keep in mind that multiple interfaces of the same type of policy can be created at once, as long as
+# they're defined in the fabric file. For example:
+# - interface_policy_cdp:
+#   - name: test_cdp1
+#     adminSt: disabled
+#   - name: test_cdp2
+#     adminSt: disabled
+#   - name: test_cdp3
+#     adminSt: enabled
+
+- name: Create Interface Policies
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/fabric.yml"
+        name: ACI_Fabric
+
+    - include_role:
+         name: aci-link-level-policy                           # Create Link Level Policy
+
+    - include_role:
+         name: aci-cdp-policy                                  # Create CDP Policy
+
+    - include_role:
+         name: aci-lldp-policy                                 # Create LLDP Interface Policy
+
+    - include_role:
+         name: aci-port-channel-policy                         # Create Port-Channel Policies
+
+    - include_role:
+         name: aci-stp-policy                                  # Create STP Interface Policy
+
+    - include_role:
+         name: aci-mcp-policy                                  # Create MCP Policy

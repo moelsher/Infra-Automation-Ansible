@@ -1,0 +1,32 @@
+---
+- name: Create interface profile
+  aci_rest:
+    hostname: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    path: /api/node/mo/uni/infra/accportprof-{{item.access_policy_interface_policy_profile_name}}.json        # URI
+    method: "{{ 'post' if (item.access_policy_interface_policy_profile_state == 'present') else 'delete' }}"
+    content:
+      infraAccPortP:  #  Interface Profile MO
+        attributes:
+          name: "{{item.access_policy_interface_policy_profile_name}}"
+          descr: "{{item.access_policy_interface_policy_profile_descr}}"
+        children:
+        - infraHPortS: # Interface Selector MO
+            attributes:
+              dn: uni/infra/accportprof-{{item.access_policy_interface_policy_profile_name}}/hports-{{item.access_policy_interface_policy_profile_interface_selector_name}}-typ-range   # specifies that the ports of the interface selector are of the type range
+              name: "{{item.access_policy_interface_policy_profile_interface_selector_name}}"
+              descr: "{{item.access_policy_interface_policy_profile_interface_selector_descr}}"
+            children:
+            - infraPortBlk:
+                attributes:
+                  dn: uni/infra/accportprof-{{item.access_policy_interface_policy_profile_name}}/hports-{{item.access_policy_interface_policy_profile_interface_selector_name}}-typ-range/portblk-block2  # specifies that the ports are of the type range
+                  name: block2
+                  toPort: "{{item.access_policy_interface_policy_profile_interface_selector_int_to}}"
+                  fromPort: "{{item.access_policy_interface_policy_profile_interface_selector_int_from}}"
+            - infraRsAccBaseGrp:
+                attributes:
+                  tDn: uni/infra/funcprof/{{item.access_policy_interface_policy_profile_interface_selector_policy_group_type}}-{{item.access_policy_interface_policy_profile_interface_selector_policy_group}}
+                   #This is the only different paramenter between creating an interface profile for an access port vs PC/vPC, the group type is accportgrp or accbundle, respectively.
+  with_items: "{{ ACI_Fabric|aci_listify('access_policy','interface_policy_profile', 'interface_selector') }}"

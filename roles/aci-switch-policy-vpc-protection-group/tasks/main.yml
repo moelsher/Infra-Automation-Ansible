@@ -1,0 +1,14 @@
+---
+- name: Create Switch vPC Protection Group
+  aci_switch_policy_vpc_protection_group:
+    host: "{{ apic_ip }}"
+    username: "{{ apic_username }}"
+    password: "{{ apic_password }}"
+    validate_certs: no
+    protection_group: "{{item.access_policy_switch_policy_virtual_port_channel_name}}"
+    protection_group_id: "{{item.access_policy_switch_policy_virtual_port_channel_id}}"
+    switch_1_id: "{{item.access_policy_switch_policy_virtual_port_channel_switch1}}"
+    switch_2_id: "{{item.access_policy_switch_policy_virtual_port_channel_switch2}}"
+    state: "{{item.access_policy_switch_policy_virtual_port_channel_state}}"
+    vpc_domain_policy: "{{item.access_policy_switch_policy_virtual_port_channel_domain}}"
+  with_items: "{{ ACI_Fabric|aci_listify('access_policy','switch_policy_virtual_port_channel') }}"

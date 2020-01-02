@@ -1,0 +1,12 @@
+---
+- name: Manage top level Application Profile (AP) (fv:Ap)
+  aci_ap:
+    hostname: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    tenant: "{{ item.tenant_name }}"
+    ap: "{{ item.tenant_app_name }}"
+    description: "{{ item.tenant_app_name }}"
+    state: "{{ item.tenant_app_state }}"
+  with_items: "{{ ACI_Fabric|aci_listify('tenant','app') }}"

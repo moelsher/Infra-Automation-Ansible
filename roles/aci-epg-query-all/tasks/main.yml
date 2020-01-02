@@ -1,0 +1,9 @@
+# This module used to query all EPGs
+---
+- name: Query all EPGs
+  aci_epg:  # This module used to query all EPGs
+    hostname: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    state: query

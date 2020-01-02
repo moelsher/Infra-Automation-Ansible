@@ -1,0 +1,12 @@
+---
+- name: Create VLAN Pool 
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/fabric.yml"
+        name: ACI_Fabric
+
+    - include_role:
+         name: aci-vlan-pool

@@ -1,0 +1,13 @@
+---
+- name: Associating a Domain with a VLAN Pool
+  hosts: "{{ target }}"
+  gather_facts: no
+
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/fabric.yml"
+        name: ACI_Fabric
+
+    - include_role:
+        name: aci-domain-to-vlan-pool                      # Associate a Domain to a VLAN Pool

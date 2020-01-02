@@ -1,0 +1,11 @@
+---
+- name: Manage physical on Cisco ACI Fabrics. (phys:DomP)
+  aci_domain:
+    hostname: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    domain: "{{ item.access_policy_physical_domain_name }}"  
+    domain_type: phys
+    state: "{{ item.access_policy_physical_domain_state }}"
+  with_items: "{{ ACI_Fabric|aci_listify('access_policy','physical_domain') }}"

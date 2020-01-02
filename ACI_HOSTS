@@ -1,0 +1,18 @@
+[aci-MBB]
+10.107.249.244
+10.107.249.245
+
+[aci-CUST-01]
+x.x.x.x
+
+
+[aci-MBB:vars]  #these are the variables for the hosts defined above (aci-MBB)
+ansible_user=admin
+ansible_password=XXXX
+ansible_python_interpreter="/usr/bin/env python"
+
+
+[aci-CUST-01:vars]  #these are the variables for the hosts defined above (aci-CUST-01)
+ansible_user=admin
+ansible_password=XXXX
+ansible_python_interpreter="/usr/bin/env python"

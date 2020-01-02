@@ -1,0 +1,13 @@
+---
+- name: Manage a LLDP policy (lldp:ifPol)
+  aci_intf_policy_lldp:
+    hostname: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    lldp_policy: "{{ item.access_policy_interface_policy_lldp_name }}"
+    receive_state: "{{ item.access_policy_interface_policy_lldp_receive_state }}"
+    transmit_state: "{{ item.access_policy_interface_policy_lldp_transmit_state }}"
+    state: "{{ item.access_policy_interface_policy_lldp_state }}"   
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('access_policy','interface_policy_lldp') }}"

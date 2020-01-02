@@ -1,0 +1,16 @@
+---
+- name: Manage encap blocks assigned to VLAN pools (fvns:EncapBlk)
+  aci_vlan_pool_encap_block:
+    host: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    pool: "{{ item.access_policy_vlan_pool_name }}"
+    state: "{{ item.access_policy_vlan_pool_state }}"
+    description: "{{ item.access_policy_vlan_pool_descr }}"
+    pool_allocation_mode: "{{ item.access_policy_vlan_pool_alloc }}"
+    allocation_mode: "{{ item.access_policy_vlan_pool_encap_block_encapalloc }}"
+    block_name: ''
+    block_start: "{{ item.access_policy_vlan_pool_encap_block_from }}"
+    block_end: "{{ item.access_policy_vlan_pool_encap_block_to }}"
+  with_items: '{{ ACI_Fabric|aci_listify("access_policy","vlan_pool","encap_block") }}'

@@ -1,0 +1,14 @@
+---
+- name: Create Attachable Entity Profile, and bind AEP to a Domain
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/fabric.yml"
+        name: ACI_Fabric
+
+    - include_role:
+         name: aci-aep                      # Create AEP creation only
+    - include_role:
+         name: aci-aep-to-domain            # Bind AEP to a domain 

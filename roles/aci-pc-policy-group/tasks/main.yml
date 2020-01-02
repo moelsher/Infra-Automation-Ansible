@@ -1,0 +1,66 @@
+---
+- name: Create a port-channel policy group
+  aci_rest:
+    hostname: "{{ apic_ip }}"
+    username: "{{ apic_username }}"
+    password: "{{ apic_password }}"
+    validate_certs: no
+    path: api/node/mo/uni/infra/funcprof/accbundle-{{ item.access_policy_interface_policy_policy_group_pc_name }}.json  # URI
+    method: "{{ 'post' if ( item.access_policy_interface_policy_policy_group_pc_state == 'present') else 'delete' }}"
+    content:
+        infraAccBndlGrp:  # MO
+            attributes:
+                name: "{{ item.access_policy_interface_policy_policy_group_pc_name }}"
+                lagT: "{{ item.access_policy_interface_policy_policy_group_pc_lagT }}"
+            children:
+                - infraRsHIfPol:
+                    attributes:
+                        tnFabricHIfPolName: "{{ item.access_policy_interface_policy_policy_group_pc_linklevel }}"   # Link-Level Policy name to be associated to this group policy
+                - infraRsLacpPol:
+                    attributes:
+                        tnLacpLagPolName: "{{ item.access_policy_interface_policy_policy_group_pc_pchannelP }}"     # Port Channel Policy name to associate to this policy group.
+                - infraRsCdpIfPol:
+                    attributes:
+                        tnCdpIfPolName: "{{ item.access_policy_interface_policy_policy_group_pc_cdp }}"            # CDP Policy name to be associated to this group policy
+                - infraRsQosIngressDppIfPol:
+                    attributes:
+                        tnQosDppPolName: "{{ item.access_policy_interface_policy_policy_group_pc_ingress }}"       # Ingress Data Plan Policing Policy name to be associated to this group policy
+                - infraRsMonIfInfraPol:
+                    attributes:
+                        tnMonInfraPolName: "{{ item.access_policy_interface_policy_policy_group_pc_mon }}"         # Monitoring Policy name to be associated to this group policy
+                - infraRsQosPfcIfPol:
+                    attributes:
+                        tnQosPfcIfPolName: "{{ item.access_policy_interface_policy_policy_group_pc_prioFlow }}"    # Priority Flow Control Policy name to be associated to this group policy
+                - infraRsFcIfPol:
+                    attributes:
+                        tnFcIfPolName: "{{ item.access_policy_interface_policy_policy_group_pc_fibreChannel }}"    # Fiber Channel Interface Policy name to be associated to this group policy
+                - infraRsQosSdIfPol:
+                    attributes:
+                        tnQosSdIfPolName: "{{ item.access_policy_interface_policy_policy_group_pc_slowDrain }}"    # Slow Drain Policy name to be associated to this group policy
+                - infraRsMcpIfPol:
+                    attributes:
+                        tnMcpIfPolName: "{{ item.access_policy_interface_policy_policy_group_pc_mcp }}"            # MCP Policy name to be associated to this group policy
+                - infraRsLldpIfPol:
+                    attributes:
+                        tnLldpIfPolName: "{{ item.access_policy_interface_policy_policy_group_pc_lldp }}"          # LLDP Policy name to be associated to this group policy
+                - infraRsStpIfPol:
+                    attributes:
+                        tnStpIfPolName: "{{ item.access_policy_interface_policy_policy_group_pc_stp }}"           # STP Interface Policy name to be associated to this group policy
+                - infraRsAttEntP:
+                    attributes:
+                        tDn: uni/infra/attentp-{{ item.access_policy_interface_policy_policy_group_pc_attEnt }}   # Attached Entity Profile name to be associated to this group policy
+                - infraRsStormctrlIfPol:
+                    attributes:
+                        tnStormctrlIfPolName: "{{ item.access_policy_interface_policy_policy_group_pc_stormcontrol }}"    # Storm Control Interface Policy name to be associated to this group policy
+                - infraRsL2IfPol:
+                    attributes:
+                        tnL2IfPolName: "{{ item.access_policy_interface_policy_policy_group_pc_l2 }}"             # L2 Conrol Interface Policy name to be associated to this group policy
+                - infraRsL2PortSecurityPol:
+                    attributes:
+                        tnL2PortSecurityPolName: "{{ item.access_policy_interface_policy_policy_group_pc_portsecurity }}" # Port security Policy  name to be associated to this group policy
+                - infraRsQosEgressDppIfPol:
+                    attributes:
+                        tnQosDppPolName: "{{ item.access_policy_interface_policy_policy_group_pc_egress }}"       # Egress Data Plane Policing Policy
+
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('access_policy','interface_policy_policy_group_pc') }}"

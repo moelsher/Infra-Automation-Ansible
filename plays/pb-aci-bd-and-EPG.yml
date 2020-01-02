@@ -1,0 +1,18 @@
+---
+- name: Create Bridge Domains, EPG, and assign a domain to EPG
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/{{ tenant_name }}.yml"
+        name: ACI_Fabric
+
+    - include_role:
+        name: aci-bd                        # Create Bridge Domain, and assign it to a VRF
+
+    - include_role:
+        name: aci-epg-bd                    #  Create EPGs, and assign it to a BD
+
+    - include_role:
+        name: aci-epg-to-domain             #  Bind a domain to an EPG

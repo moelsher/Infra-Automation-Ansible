@@ -1,0 +1,18 @@
+---
+- name: Create Switch Profile,Switch Selector, and association
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/fabric.yml"
+        name: ACI_Fabric
+
+    - include_role:
+         name: aci-switch-profile                          # Create Switch Profile for Individual or vPC pair Switch(es)
+
+    - include_role:
+         name: aci-switch-selector                         # Create Switch Selector
+
+    - include_role:
+         name: aci-interface-selector-to-switch-profile    # Associate Switch Profile with Switch Selector

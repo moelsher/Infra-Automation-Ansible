@@ -1,0 +1,19 @@
+---
+- name: Manage Bridge Domains (BD) on Cisco ACI Fabrics and Associate it to Specified Tenant (fvBD)
+  aci_bd:
+    hostname: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    tenant: "{{ item.tenant_name }}"
+    bd: "{{ item.tenant_bd_name }}"
+    vrf: "{{ item.tenant_bd_vrf }}"
+    arp_flooding: "{{ item.tenant_bd_arpflooding }}"
+    bd_type: "{{ item.tenant_bd_bd_type }}"
+    enable_routing: "{{ item.tenant_bd_enablerouting }}"
+    l2_unknown_unicast: "{{ item.tenant_bd_l2unknown_unicast }}"
+    l3_unknown_multicast: "{{ item.tenant_bd_l3unknown_mcast }}"
+    multi_dest: "{{ item.tenant_bd_multi_dest }}"
+    state: "{{ item.tenant_bd_state }}" 
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('tenant','bd') }}"

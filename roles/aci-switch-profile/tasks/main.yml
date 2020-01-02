@@ -1,0 +1,10 @@
+---
+- name: Create Switch profile for Access Port or PC/vPC (infra:NodeP)
+  aci_switch_policy_leaf_profile:
+    host: "{{ apic_ip }}"
+    username: "{{ apic_username }}"
+    password: "{{ apic_password }}"
+    validate_certs: no
+    name: "{{item.access_policy_switch_policy_profile_name}}"
+    description: "{{item.access_policy_switch_policy_profile_descr}}"
+  with_items: "{{ ACI_Fabric|aci_listify('access_policy','switch_policy_profile') }}"

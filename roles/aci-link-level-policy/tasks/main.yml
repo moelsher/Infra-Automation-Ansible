@@ -1,0 +1,20 @@
+---
+- name: Create a link-level policy
+  aci_rest:
+    hostname: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    path: api/node/mo/uni/infra/hintfpol-{{ item.access_policy_interface_policy_link_level_name }}.json         # URI
+    method: "{{ 'post' if (item.access_policy_interface_policy_link_level_state == 'present') else 'delete' }}"
+    content:
+        fabricHIfPol:  # MO
+            attributes:
+               name: "{{ item.access_policy_interface_policy_link_level_name }}"
+               autoNeg: "{{ item.access_policy_interface_policy_link_level_autoNeg }}"
+               speed: "{{  item.access_policy_interface_policy_link_level_speed }}"
+               linkDebounce: "{{  item.access_policy_interface_policy_link_level_linkDebounce }}"
+               fecMode: "{{  item.access_policy_interface_policy_link_level_fecMode }}"
+
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('access_policy','interface_policy_link_level') }}"

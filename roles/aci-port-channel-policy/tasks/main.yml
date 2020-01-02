@@ -1,0 +1,20 @@
+---
+- name: Create a Port-Channel policy
+  aci_rest:
+    hostname: "{{ apic_ip }}"
+    username: "{{ apic_username }}"
+    password: "{{ apic_password }}"
+    validate_certs: no
+    path: api/node/mo/uni/infra/lacplagp-{{item.access_policy_interface_policy_port_channel_name}}.json             # URI
+    method: "{{ 'post' if (item.access_policy_interface_policy_port_channel_state == 'present' ) else 'delete' }}"
+    content:
+        lacpLagPol:  # MO
+            attributes:
+               name: "{{item.access_policy_interface_policy_port_channel_name }}"
+               mode: "{{item.access_policy_interface_policy_port_channel_mode }}"           # Port-channel policy mode, for example 'LACP Active'
+               ctrl: "{{item.access_policy_interface_policy_port_channel_ctrl }}"           # Control flags, such as Graceful Convergence (graceful-conv)
+               minLinks: "{{item.access_policy_interface_policy_port_channel_minLinks }}"   # minimum number of links
+               maxLinks: "{{item.access_policy_interface_policy_port_channel_maxLinks }}"   # maximum number of links
+
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('access_policy','interface_policy_port_channel') }}"

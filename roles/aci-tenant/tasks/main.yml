@@ -1,0 +1,12 @@
+---
+- name: Manage tenants on Cisco ACI Fabric (fv:Tenant)
+  aci_tenant:
+    hostname: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    tenant: "{{ item.tenant_name }}"
+    description: "{{ item.tenant_description }}"
+    state: "{{ item.tenant_state }}"
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('tenant') }}"

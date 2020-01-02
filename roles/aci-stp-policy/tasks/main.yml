@@ -1,0 +1,16 @@
+---
+- name: Create an interface STP policy
+  aci_rest:
+    hostname: "{{ apic_ip }}"
+    username: "{{ apic_username }}"
+    password: "{{ apic_password }}"
+    validate_certs: no
+    path: api/node/mo/uni/infra/ifPol-{{ item.access_policy_interface_policy_stp_name}}.json                # URI
+    method: "{{ 'post' if ( item.access_policy_interface_policy_stp_state == 'present' ) else 'delete' }}"
+    content:
+        stpIfPol: # STP interface policy MO
+            attributes:
+               name: "{{ item.access_policy_interface_policy_stp_name }}"             # Name of the STP Interface Policy
+               ctrl: "{{ item.access_policy_interface_policy_stp_ctrl }}"             # Interface controls, such as BPDU Guard enabled (bpdu-guard)
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('access_policy','interface_policy_stp') }}"

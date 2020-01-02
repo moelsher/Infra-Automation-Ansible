@@ -1,0 +1,12 @@
+---
+- name: EPG Static Binding to specific Interface Policy Group, Encapsulation
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/{{ tenant_name }}.yml"
+        name: ACI_Fabric
+
+    - include_role:
+        name: aci-staic-binding-to-epg                     # Bind Tenant EPG to specific Interface/IPG, and VLAN "Static Binding"

@@ -1,0 +1,12 @@
+---
+- name: Bind AEP to a Domain (infra:RsDomP)
+  aci_aep_to_domain:
+    host: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    aep: "{{ item.access_policy_aep_name }}"
+    state: "{{ item.access_policy_aep_state }}"
+    domain: "{{ item.access_policy_aep_domain_name }}"
+    domain_type: phys
+  with_items: '{{ ACI_Fabric|aci_listify("access_policy","aep","domain") }}'

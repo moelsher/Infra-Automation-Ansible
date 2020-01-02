@@ -1,0 +1,10 @@
+---
+- name: Manage attachable Access Entity Profile (AEP) (fvAEP)
+  aci_aep:
+    host: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    aep: "{{item.access_policy_aep_name}}"
+    state: present
+  with_items: "{{ ACI_Fabric|aci_listify('access_policy','aep', 'domain') }}"

@@ -1,0 +1,15 @@
+---
+- name: Create ACI Teant and VRF
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/{{ tenant_name }}.yml"
+        name: ACI_Fabric
+
+    - include_role:
+        name: aci-tenant                    # Create a User Tenant
+        
+    - include_role:
+        name: aci-vrf                       # Create a VRF/Context

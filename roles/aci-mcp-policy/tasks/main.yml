@@ -1,0 +1,16 @@
+---
+- name: Manage a MCP policy
+  aci_rest:
+    hostname: "{{ apic_ip }}"
+    username: "{{ apic_username }}"
+    password: "{{ apic_password }}"
+    validate_certs: no
+    path: api/node/mo/uni/infra/mcpIfP-{{ item.access_policy_interface_policy_mcp_name }}.json   # URI
+    method: "{{ 'post' if (item.access_policy_interface_policy_mcp_state == 'present') else 'delete' }}"
+    content:
+        mcpIfPol:   # MO
+            attributes:
+               name: "{{ item.access_policy_interface_policy_mcp_name }}"
+               adminSt: "{{ item.access_policy_interface_policy_mcp_adminSt }}"  
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('access_policy','interface_policy_mcp') }}"

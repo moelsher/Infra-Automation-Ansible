@@ -1,0 +1,16 @@
+---
+- name: Create a CDP policy
+  aci_rest:
+    hostname: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    path: api/node/mo/uni/infra/cdpIfP-{{ item.access_policy_interface_policy_cdp_name }}.json  # URI
+    method: "{{ 'post' if (item.access_policy_interface_policy_cdp_state == 'present') else 'delete' }}"
+    content:
+        cdpIfPol:     # Parent MO
+            attributes:
+               name: "{{ item.access_policy_interface_policy_cdp_name }}"
+               adminSt: "{{ item.access_policy_interface_policy_cdp_adminSt }}"
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('access_policy','interface_policy_cdp') }}"

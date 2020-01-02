@@ -1,0 +1,22 @@
+---
+- name: Setup ACI Teant, VRF, BD, and BD Subnet
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/{{ tenant_name }}.yml"
+        name: ACI_Fabric
+
+
+    - include_role:
+        name: aci-tenant                                   # Create User Tenants
+
+    - include_role:
+        name: aci-tenant-vrf                               # Create VRF/Context
+
+    - include_role:
+        name: aci-tenant-bd                                # Create BD
+
+    - include_role:
+        name: aci-tenant-bd-subnet                         # Assign a Subnet to BDs

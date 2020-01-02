@@ -1,0 +1,15 @@
+---
+- name: Create Policy Groups
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/fabric.yml"
+        name: ACI_Fabric
+
+    - include_role:
+        name: aci-access-port-policy-group                 # Create Access Port Policy Group
+
+    - include_role:
+        name: aci-pc-policy-group                          # Create Port Channel and vPC Interface Policy Group , also creates vPCs depending on the lagT parameter, 'link' for PC and 'node' for vPC

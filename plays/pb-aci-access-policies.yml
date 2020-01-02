@@ -1,0 +1,68 @@
+---
+- name: On Boarding ACI Access Policies
+  hosts: "{{ target }}"
+  gather_facts: no
+
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/fabric.yml"
+        name: ACI_Fabric
+
+
+    - include_role:
+        name: aci-vlan-pool                                # Create VLAN Pool
+
+    - include_role:
+        name: aci-vlan-pool-encap-block                    # Create VLAN Encap Block for the VLAN Pool
+
+    - include_role:
+        name: aci-physical-domain                          # Create Physical Domain
+
+    - include_role:
+        name: aci-domain-to-vlan-pool                      # VLAN Pool to domain Association
+
+    - include_role:
+         name: aci-aep                                     # Create AEP Only
+
+    - include_role:
+         name: aci-aep-to-domain                           # AEP to Physical domain Association
+
+    - include_role:
+         name: aci-link-level-policy                       # Create Link Level Policy
+
+    - include_role:
+         name: aci-cdp-policy                              # Create CDP Policy
+
+    - include_role:
+         name: aci-lldp-policy                             # Create LLDP Interface Policy
+
+    - include_role:
+         name: aci-port-channel-policy                     # Create Port-Channel Policies
+
+    - include_role:
+         name: aci-stp-policy                              # Create STP Interface Policy
+
+    - include_role:
+         name: aci-mcp-policy                              # Create MCP Policy (REST - Ansible Module has a bug)
+
+    - include_role:
+        name: aci-access-port-policy-group                 # Create Access Port Policy Group
+
+    - include_role:
+        name: aci-pc-policy-group                          # Create Port Channel and vPC Interface Policy Group -  depending on the lagT parameter, 'link' for PC and 'node' for vPC
+
+    - include_role:
+         name: aci-interface-profile                       # Create Interface Profile for Access Port or PC/vPC
+
+    - include_role:
+         name: aci-switch-profile                          # Create Switch Profile for Individual or vPC pair Switch(es)
+
+    - include_role:
+         name: aci-switch-selector                         # Create Switch Selector
+
+    - include_role:
+         name: aci-interface-selector-to-switch-profile    # Bind Switch Selector to Switch Profile
+
+    - include_role:
+         name: aci-switch-policy-vpc-protection-group      # Create Switch vPC Protection Group

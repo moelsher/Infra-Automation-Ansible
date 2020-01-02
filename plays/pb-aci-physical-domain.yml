@@ -1,0 +1,12 @@
+---
+- name: Create Physical Domain
+  hosts: "{{ target }}"
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: "{{ ACI_Env_Path }}/fabric.yml"
+        name: ACI_Fabric
+
+    - include_role:
+         name: aci-physical-domain                         # Create Physical Domain for each Physical External Node

@@ -1,0 +1,16 @@
+---
+- name: Manage Subnets on Cisco ACI (fv:Subnet)
+  aci_bd_subnet:
+    hostname: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    tenant: "{{ item.tenant_name }}"
+    bd: "{{ item.tenant_bd_name }}"
+    subnet_name: "{{ item.tenant_bd_subnet_name }}"
+    gateway: "{{ item.tenant_bd_subnet_name }}"
+    scope: "{{ item.tenant_bd_subnet_scope }}"
+    mask: "{{ item.tenant_bd_subnet_mask }}"
+    state: "{{ item.tenant_bd_subnet_state }}"
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('tenant','bd','subnet') }}"

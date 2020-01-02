@@ -1,0 +1,14 @@
+---
+- name: Manage End Point Groups (EPG), under User Tenants, and associate it to BD and AP.  (fvAEPg)
+  aci_epg:
+    hostname: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    tenant: "{{ item.tenant_name }}"
+    ap: "{{ item.tenant_app_name }}"
+    epg: "{{ item.tenant_app_epg_name }}"
+    bd: "{{ item.tenant_app_epg_bd }}"
+    state: "{{ item.tenant_app_epg_state }}"
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('tenant','app','epg') }}"

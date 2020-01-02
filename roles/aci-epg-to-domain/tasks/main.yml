@@ -1,0 +1,15 @@
+---
+- name: Bind EPGs to Domains (fvRsDomAtt)
+  aci_epg_to_domain:
+    host: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    tenant: "{{ item.tenant_name }}"
+    ap: "{{ item.tenant_app_name }}"
+    epg: "{{ item.tenant_app_epg_name }}"
+    domain: "{{ item.tenant_app_epg_domain_name }}"
+    domain_type: "{{ item.tenant_app_epg_domain_type }}"
+    state: "{{ item.tenant_app_epg_domain_state }}"
+  with_items:
+    - "{{ ACI_Fabric|aci_listify('tenant','app','epg','domain') }}"

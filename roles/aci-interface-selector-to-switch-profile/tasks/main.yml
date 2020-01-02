@@ -1,0 +1,11 @@
+---
+- name: Bind interface selector profiles to switch policy leaf profiles (infra:RsAccPortP)
+  aci_interface_selector_to_switch_policy_leaf_profile:
+    host: '{{ apic_ip }}'
+    username: '{{ apic_username }}'
+    password: '{{ apic_password }}'
+    validate_certs: no
+    leaf_profile: "{{item.access_policy_switch_policy_profile_name}}"
+    interface_selector: "{{item.access_policy_switch_policy_profile_interface_selector_profile_name}}"
+    state: "{{item.access_policy_switch_policy_profile_interface_selector_profile_state}}"
+  with_items: "{{ ACI_Fabric|aci_listify('access_policy','switch_policy_profile','interface_selector_profile') }}"
