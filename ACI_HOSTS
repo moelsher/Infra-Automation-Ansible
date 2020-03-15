@@ -1,12 +1,5 @@
-[aci-MBB]
-10.107.249.244
-10.107.249.245
-
-[aci-CUST-01]
-x.x.x.x
-
-
-
+[aci-CUST-01] 
+x.x.x.x                  #APICIP
 
 [aci-CUST-01:vars]  #these are the variables for the hosts defined above (aci-CUST-01)
 ansible_user=admin
